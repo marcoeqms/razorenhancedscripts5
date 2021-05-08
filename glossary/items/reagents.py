@@ -10,3 +10,11 @@ reagents = {
     'Spider\'s Silk': myItem( 'Spider\'s Silk', 0x0F8D, 0x0000, 'reagent', 0.1 ),
     'Sulfurous Ash': myItem( 'Sulfurous Ash', 0x0F8C, 0x0000, 'reagent', 0.1 )
 }
+
+reagentsNecro = {
+    'Demon Blood': myItem( 'Demon Blood', 0x0F7D, 0x0000, 'reagent', 0.1 ),
+    'Pig Iron': myItem( 'Pig Iron', 0x0F8A, 0x0000, 'reagent', 0.1 ),
+    'Grave Dust': myItem( 'Grave Dust', 0x0F8F, 0x0000, 'reagent', 0.1 ),
+    'Nox Crystal': myItem( 'Nox Crystal', 0x0F8E, 0x0000, 'reagent', 0.1 ),
+    'Batwing': myItem( 'Batwing', 0x0F78, 0x0000, 'reagent', 0.1 )
+}

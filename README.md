@@ -8,3 +8,16 @@ At the time of this writing, RE does not support the ability to add scripts to t
 - train for training skills
 
 While we are unable to directly run files in subdirectories, we can import files from subdirectories that have been made into submodules by adding the \_\_init\_\_.py file to them (e.g. [the glossary submodule](glossary)). This is handy for having a central location for code that is referrenced in multiple files.
+
+### Installation notes (ClassicUO client):
+1. Clone into "Scripts" dir.
+2. Rename cloned dir to "Scripts" (so there is Scripts dir with contents of this repo inside your Razor Scripts dir)
+3. To run scripts create your own wrappers and import the contents of these modules. Example:
+```
+# Restock Reagents
+from Scripts.organizer_restock_reagents import *
+
+RestockReagents(150, 'magery')
+RestockReagents(50, 'necro')
+```
+4. Some scripts will throw an error like "Misc is not defined" or something like that. So go inside that script and just add "import Misc, Player, Target" etc.

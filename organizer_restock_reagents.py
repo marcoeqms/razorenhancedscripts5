@@ -2,10 +2,6 @@
 removeReagentsIfOverRestockToAmount = True
 
 houseReagentsChestSerial = 0x43923CEA
-houseTopLeftCornerX = 975
-houseTopLeftCornerY = 452
-houseBottomRightCornerX = 987
-houseBottomRightCornerY = 469
 
 import Misc, Items, Player, Target
 from Scripts.utilities.items import FindItem, MoveItem, FindNumberOfItems
@@ -13,17 +9,21 @@ from Scripts.glossary.items.reagents import reagents, reagentsNecro
 from Scripts.glossary.colors import colors
 from Scripts import config
 
-# Usage example: RestockReagents(50, 'necro')
-def RestockReagents(restockTo, type = 'magery'):
+# Usage example: RestockReagents(50, ['magery', 'necro'])
+def RestockReagents(restockTo, type = ['magery']):
     global removeReagentsIfOverRestockToAmount
 
+    Misc.SendMessage('Hello there!')
+
     reagentsBagSharedValue = 'reagentsBag'
+    
+    reagentsBag = Target.PromptTarget( 'Select bag to move the reagents into' )
 
-    if not Misc.CheckSharedValue( reagentsBagSharedValue ):
-        reagentsBag = Target.PromptTarget( 'Select bag to move the reagents into' )
-        Misc.SetSharedValue( reagentsBagSharedValue, reagentsBag )
+    # if not Misc.CheckSharedValue( reagentsBagSharedValue ):
+    #     reagentsBag = Target.PromptTarget( 'Select bag to move the reagents into' )
+    #     Misc.SetSharedValue( reagentsBagSharedValue, reagentsBag )
 
-    reagentsBag = Misc.ReadSharedValue( reagentsBagSharedValue )
+    # reagentsBag = Misc.ReadSharedValue( reagentsBagSharedValue )
     if reagentsBag == None or Items.FindBySerial( reagentsBag ) == None:
         Player.HeadMessage( colors[ 'red' ], 'Can\'t find reagents bag! Clearing stored bag, please run again' )
         Misc.RemoveSharedValue( reagentsBagSharedValue )
@@ -31,23 +31,21 @@ def RestockReagents(restockTo, type = 'magery'):
 
     reagentsBag = Items.FindBySerial( reagentsBag )
 
-    if ( Player.Position.X >= houseTopLeftCornerX and Player.Position.Y >= houseTopLeftCornerY and
-            Player.Position.X <= houseBottomRightCornerX and Player.Position.Y <= houseBottomRightCornerY ):
-        reagentsSource = Items.FindBySerial( houseReagentsChestSerial )
-    else:
-        reagentsSource = Target.PromptTarget( 'Select container to restock from' )
-        reagentsSource = Items.FindBySerial( reagentsSource )
-        if reagentsSource == None or not reagentsSource.IsContainer:
-            Player.HeadMessage( colors[ 'red' ], 'Invalid source container' )
+    reagentsSource = Target.PromptTarget( 'Select container to restock from' )
+    reagentsSource = Items.FindBySerial( reagentsSource )
+    if reagentsSource == None or not reagentsSource.IsContainer:
+        Player.HeadMessage( colors[ 'red' ], 'Invalid source container' )
 
     Items.UseItem( reagentsSource )
     Misc.Pause( config.dragDelayMilliseconds )
 
     # Switch reagent type
-    if type == 'necro':
-        regs = reagentsNecro
-    else:
-        regs = reagents
+    regs = dict()
+    for regType in type:
+        if regType == 'necro':
+            regs.update(reagentsNecro)
+        elif regType == 'magery':
+            regs.update(reagents)
     
     reagentItemIDs = [ regs[ reagent ].itemID for reagent in regs ]
     reagentsInBag = FindNumberOfItems( reagentItemIDs, reagentsBag )
@@ -69,4 +67,4 @@ def RestockReagents(restockTo, type = 'magery'):
             Misc.SendMessage( 'Removing %i %s' % ( reagentStackFromReagentsBag.Amount - restockTo, currentReagent.name ) )
             MoveItem( Items, Misc, reagentStackFromReagentsBag, reagentsSource, reagentStackFromReagentsBag.Amount - restockTo )
             
-    Misc.SendMessage('Done with ' + type, colors[ 'green' ])
+    Misc.SendMessage('Done!')

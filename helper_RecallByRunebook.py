@@ -1,3 +1,9 @@
+'''
+Te setup: set the runebook_serial variable according to your runebook.
+To use: say the exact name of the rune in Runebook and then execute the
+    corresponding function: RecallByName or GateByName
+'''
+
 import Items, Misc, Player, Gumps, Journal
 
 runebook_serial = 0x4002E606

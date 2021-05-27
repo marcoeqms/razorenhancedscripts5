@@ -1,16 +1,18 @@
-containerToSort = 0x43924063
+import Misc, Items
+
+containerToSort = 0x4002C1C3
 containerToSort = Items.FindBySerial( containerToSort )
 Items.UseItem( containerToSort )
-Misc.Pause( 700 )
+Misc.Pause( 100 )
 
-circleOneBag = 0x41ACF8F7
-circleTwoBag = 0x4025EC4C
-circleThreeBag = 0x41ACF8F3
-circleFourBag = 0x41AD6E77
-circleFiveBag = 0x41AC0E93
-circleSixBag = 0x42024252
-circleSevenBag = 0x41ACDF7A
-circleEightBag = 0x41AD1D51
+circleOneBag = 0x4003359D
+circleTwoBag = 0x400335A2
+circleThreeBag = 0x400335A1
+circleFourBag = 0x400335A3
+circleFiveBag = 0x4003359C
+circleSixBag = 0x4003359F
+circleSevenBag = 0x4003359E
+circleEightBag = 0x400335A0
 
 from Scripts.glossary.spells import spells
 from Scripts.glossary.items.spellScrolls import spellScrolls

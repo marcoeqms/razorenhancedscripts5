@@ -9,11 +9,52 @@ from Scripts.glossary.items.reagents import reagents, reagentsNecro
 from Scripts.glossary.colors import colors
 from Scripts import config
 
+moveItemTimeout = 100
+# Restock a particular reagent
+def RestockReagent(name, amount):
+
+    # Reagent Source
+    reagentsSource = Target.PromptTarget( 'Select container to restock from' )
+    reagentsSource = Items.FindBySerial( reagentsSource )
+    if reagentsSource == None or not reagentsSource.IsContainer:
+        Player.HeadMessage( colors[ 'red' ], 'Invalid source container' )
+    
+    # Reagents destination    
+    reagentsBag = Target.PromptTarget( 'Select bag to move the reagents into' )
+    if reagentsBag == None or Items.FindBySerial( reagentsBag ) == None:
+        Player.HeadMessage( colors[ 'red' ], 'Can\'t find reagents bag! Clearing stored bag, please run again' )
+        Misc.RemoveSharedValue( reagentsBagSharedValue )
+        return
+
+    reagentsBag = Items.FindBySerial( reagentsBag )
+
+    # Get Reagent serial
+    
+    # Switch reagent type
+    regs = dict()
+    regs.update(reagentsNecro)
+    regs.update(reagents)
+
+    if name in regs:
+        reagent = regs[name]
+        Misc.Pause( config.dragDelayMilliseconds )
+
+        # Open the source container
+        Items.UseItem( reagentsSource )
+
+        reagentInBag = FindNumberOfItems( reagent.ItemID, reagentsBag )
+
+        MoveItem( Items, Misc, reagentInBag, reagentsSource, amount )
+
+        Misc.SendMessage( 'Done!', colors['green'] )
+    else:
+        Misc.SendMessage( 'Invalid reagent. Aborting', colors['red'] )
+        return
+
+
 # Usage example: RestockReagents(50, ['magery', 'necro'])
 def RestockReagents(restockTo, type = ['magery']):
     global removeReagentsIfOverRestockToAmount
-
-    Misc.SendMessage('Hello there!')
 
     reagentsBagSharedValue = 'reagentsBag'
     
@@ -51,7 +92,7 @@ def RestockReagents(restockTo, type = ['magery']):
     reagentsInBag = FindNumberOfItems( reagentItemIDs, reagentsBag )
     
     for reagent in regs:
-        Misc.Pause(1000)
+        Misc.Pause(moveItemTimeout)
         currentReagent = regs[ reagent ]
         if reagentsInBag[ currentReagent.itemID ] == restockTo:
             continue

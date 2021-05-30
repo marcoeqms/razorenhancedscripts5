@@ -1,4 +1,5 @@
 import Misc, Items
+from Scripts.utilities.colors import colors
 
 containerToSort = 0x4002C1C3
 containerToSort = Items.FindBySerial( containerToSort )
@@ -44,3 +45,5 @@ for item in containerToSort.Contains:
             MoveItem( Items, Misc, item, circleSevenBag )
         elif spell.circle == 8:
             MoveItem( Items, Misc, item, circleEightBag )
+
+Misc.SendMessage("Done!", colors['green'])

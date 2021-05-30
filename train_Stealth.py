@@ -1,3 +1,5 @@
+import Misc, Timer, Player
+
 # Adding an extra 200 ms in case of latency issues
 hidingTimerMilliseconds = 10200
 stealthTimerMilliseconds = 10200
